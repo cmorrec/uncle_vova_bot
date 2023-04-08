@@ -1,0 +1,15 @@
+{
+  "aiFormalName": "ИИ",
+  "defaultNames": ["Неопознанная обезьяна", "Неопознанный крокодил", "Неопознанный писец", "Неопознанный пользователь"],
+  "hisQuotesTransition": "Его цитаты",
+  "rudeRequirements": "грубо, используя ненормативную лексику",
+  "wakeup": {
+    "createJoke": "${description} Придумай шутку {formal}, чтобы разрядить обстановку в компании {rude}.",
+    "rememberJoke": "${description} Расскажи анекдот {formal}, чтобы разрядить обстановку в компании {rude}.",
+    "createFunFact": "${description} Расскажи веселый факт {formal}, чтобы разрядить обстановку в компании {rude}.",
+    "questionForAll": "${description} Задай вопрос {formal}, чтобы разрядить обстановку в компании {rude}.",
+    "questionForUser": "${description} Задай вопрос {formal} чтобы разрядить обстановку в компании {rude}. Задай его конкретно {userDescription}",
+    "userQuotesTransition": "Цитаты",
+    "informalRef": " от него"
+  }
+}
