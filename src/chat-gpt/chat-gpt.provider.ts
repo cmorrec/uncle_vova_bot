@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
-import { decode, encode } from 'gpt-3-encoder';
+import { encode } from 'gpt-3-encoder';
 
 import { EnvironmentVariables } from 'src/env-validator';
 import { handleError } from 'src/utils/handle-error';
 
-const TEMPERATURE = 0.7;
+const TEMPERATURE = 1;
+const MAX_TOKENS = 1800;
 
 @Injectable()
 export class ChatGPTProvider {
@@ -72,7 +73,7 @@ export class ChatGPTProvider {
   private getMaxTokens(
     input: { prompt: string } | { messages: ChatCompletionRequestMessage[] },
   ): number {
-    const max = 2048;
+    const max = MAX_TOKENS;
     if ('prompt' in input) {
       const encodedCompletion = encode(input.prompt);
 
