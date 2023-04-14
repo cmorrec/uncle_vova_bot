@@ -20,6 +20,7 @@ ENV NODE_ENV build
 #USER node
 WORKDIR /home/node
 
+COPY ./.env ./.env
 COPY package*.json ./
 RUN npm ci
 
