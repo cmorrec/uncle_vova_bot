@@ -30,6 +30,7 @@
     "@vercel/node": "^2.10.3",
     "class-transformer": "^0.5.1",
     "dotenv": "^16.0.3",
+    "gpt-3-encoder": "^1.1.4",
     "lodash": "^4.17.21",
     "mongoose": "^7.0.3",
     "nestjs-i18n": "^10.2.6",

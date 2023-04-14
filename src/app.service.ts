@@ -255,7 +255,6 @@ export class AppService {
     const initDate = getDateTime(date)!
       .minus({ minutes: minusMinutes })
       .toJSDate();
-    console.log(initDate);
 
     const messages = await this.messageRepo.getLastMessages({
       chatId: chatId,
@@ -346,7 +345,7 @@ export class AppService {
     ctx: BotContext,
   ): Promise<UpdateDBInfo | undefined> {
     try {
-      console.log(JSON.stringify(ctx.update, null, 3), '\n');
+      console.info(JSON.stringify(ctx.update, null, 3), '\n');
       const now = DateTime.local().toJSDate();
       const ctxMessage = ctx.update.message;
       const ctxRepliedMessage = ctxMessage.reply_to_message;

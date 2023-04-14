@@ -71,7 +71,7 @@ export class AppUpdate {
     });
     newMessage.date = DateTime.local().toSeconds();
 
-    console.log(
+    console.info(
       'Replied Message: ',
       JSON.stringify(newMessage, null, 3),
       '\n\n\n',

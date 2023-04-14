@@ -42,7 +42,7 @@ export class ChatGPTService {
   async get(input: TextGenerationInput): Promise<string | undefined> {
     /**
      * Дядя Вова - вредный глупый старик-алкоголик, который много матерится.
-     * 
+     *
      * Options:
      *  1) text-davinchi vs chat-gpt3.5-turbo
      *  2) completion vs chat vs fine-tune
