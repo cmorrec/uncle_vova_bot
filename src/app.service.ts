@@ -227,7 +227,7 @@ export class AppService {
   }
 
   private hasFormalMention(text: string): boolean {
-    return this.getInformalMentions().some((e) =>
+    return this.getFormalMentions().some((e) =>
       text.toLowerCase().includes(e.toLowerCase()),
     );
   }

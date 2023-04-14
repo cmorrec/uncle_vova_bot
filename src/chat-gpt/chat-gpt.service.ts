@@ -54,6 +54,16 @@ export class ChatGPTService {
      * fine-tune  |                  |
      */
 
+    // TODO replace this shitty stuff
+    const botUsername = this.config.get<string>('TELEGRAM_BOT_USERNAME')!;
+    input.messages.forEach((e) => {
+      if (e.text) {
+        e.text = e.text.replace(`@${botUsername}`, '');
+      } else if (e.caption) {
+        e.caption = e.caption.replace(`@${botUsername}`, '');
+      }
+    });
+
     const isFormal: boolean = Boolean(
       !input.character || !input.character.botDescriprion,
     );
