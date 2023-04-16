@@ -38,8 +38,6 @@ export class AppUpdate {
 
   @On('message')
   async onMessage(@Ctx() ctx: BotContext) {
-    // TODO update(delete) before release
-    await this.service.saveChatMiddleware(ctx);
     const updateDBInfo = await this.service.saveMessageMiddleware(ctx);
     const result = updateDBInfo
       ? await this.service.getAnswer(updateDBInfo)
