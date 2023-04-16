@@ -8,9 +8,8 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppUpdate } from './app.update';
-import { validateEnv } from './env-validator';
+import { EnvironmentVariables, validateEnv } from './env-validator';
 import { ChatGPTModule } from './chat-gpt/chat-gpt.module';
-import { MongooseModule } from '@nestjs/mongoose';
 import { RepoModule } from './repo/repo.module';
 
 @Module({
@@ -19,8 +18,21 @@ import { RepoModule } from './repo/repo.module';
     ScheduleModule.forRoot(),
     TelegrafModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (
+        configService: ConfigService<EnvironmentVariables>,
+      ) => ({
         token: configService.get<string>('TELEGRAM_BOT_TOKEN') ?? '',
+        ...(configService.get<string>('WEBHOOK_DOMAIN') &&
+        configService.get<string>('WEBHOOK_PATH')
+          ? {
+              launchOptions: {
+                webhook: {
+                  domain: configService.get<string>('WEBHOOK_DOMAIN') ?? '',
+                  hookPath: configService.get<string>('WEBHOOK_PATH') ?? '',
+                },
+              },
+            }
+          : {}),
       }),
       inject: [ConfigService],
     }),

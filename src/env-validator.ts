@@ -20,6 +20,14 @@ export class EnvironmentVariables {
 
   @IsString()
   MONGODB_URI: string;
+  
+  @IsString()
+  @IsOptional()
+  WEBHOOK_DOMAIN?: string;
+  
+  @IsString()
+  @IsOptional()
+  WEBHOOK_PATH?: string;
 }
 
 export function validateEnv(config: Record<string, unknown>) {
