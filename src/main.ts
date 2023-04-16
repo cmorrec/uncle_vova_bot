@@ -13,8 +13,7 @@ async function bootstrap() {
   if (webhookPath) {
     const bot = app.get(getBotToken());
     app.use(bot.webhookCallback(webhookPath));
-  } else {
-    await app.listen(8080);
   }
+  await app.listen(8080);
 }
 bootstrap();
