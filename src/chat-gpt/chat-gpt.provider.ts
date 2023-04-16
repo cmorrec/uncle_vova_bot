@@ -6,7 +6,7 @@ import { encode } from 'gpt-3-encoder';
 import { EnvironmentVariables } from 'src/env-validator';
 import { handleError } from 'src/utils/handle-error';
 
-const TEMPERATURE = 1;
+const TEMPERATURE = 0.7;
 const MAX_TOKENS = 1800;
 
 @Injectable()
@@ -41,7 +41,8 @@ export class ChatGPTProvider {
     try {
       const response = await this.openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
-        messages: requestChat,
+        // TODO what the fuck
+        messages: requestChat.map((e) => ({ role: e.role, content: e.content })),
         temperature: TEMPERATURE,
         max_tokens: this.getMaxTokens({ messages: requestChat }),
       });
