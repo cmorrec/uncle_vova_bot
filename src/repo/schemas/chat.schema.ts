@@ -38,6 +38,9 @@ export class Chat {
 
   @Prop({ required: true })
   wakeUp: boolean;
+
+  @Prop({ required: true })
+  active: boolean;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

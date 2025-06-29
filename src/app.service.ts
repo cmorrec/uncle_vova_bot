@@ -330,6 +330,7 @@ export class AppService {
           type: ctxChat.type,
           wakeUp: true,
           botIsRude: true,
+          active: false,
         };
         await this.chatRepo.create(chat);
         await this.upsertUsers(now, [ctxFrom]);
