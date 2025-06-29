@@ -357,7 +357,7 @@ export class AppService {
       const userId = String(ctxFrom.id);
 
       let chat = await this.chatRepo.getById(chatId);
-      if (!chat) {
+      if (!chat || !chat.active) {
         return undefined;
       }
 

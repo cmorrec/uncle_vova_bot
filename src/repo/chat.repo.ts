@@ -17,11 +17,14 @@ export class ChatRepo {
     return this.chatModel.findOneAndUpdate({ chatId: chat.chatId }, chat);
   }
 
-  async getById(chatId: string): Promise<Chat | null> {
-    return this.chatModel.findOne({ chatId }).lean();
+  async getById(
+    chatId: string,
+    where: { active?: boolean } = {},
+  ): Promise<Chat | null> {
+    return this.chatModel.findOne({ chatId, ...where }).lean();
   }
 
   async getWakedUp(): Promise<Chat[]> {
-    return this.chatModel.find({ wakeUp: true }).lean();
+    return this.chatModel.find({ wakeUp: true, active: true }).lean();
   }
 }
