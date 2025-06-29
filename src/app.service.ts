@@ -280,7 +280,7 @@ export class AppService {
     // nothing -> character, formal -> undefined, informal -> character
     return (
       Boolean(
-        chat.botDescriprion || (chat.botQuotes && !isEmpty(chat.botQuotes)),
+        chat.botDescription || (chat.botQuotes && !isEmpty(chat.botQuotes)),
       ) &&
       (messages.some(
         (e) => e.isMainBotMessage && e.isFormalMessage === false,
@@ -322,7 +322,7 @@ export class AppService {
         chat = {
           chatId: chatId,
           chatMemberIds: [userId],
-          botDescriprion: undefined,
+          botDescription: undefined,
           botQuotes: [],
           title: ctxChat.title,
           createdAt: now,

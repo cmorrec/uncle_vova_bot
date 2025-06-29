@@ -1,18 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import {
-  CreateChatCompletionResponse,
-  CreateCompletionResponse,
-  FineTune,
-} from 'openai';
+import OpenAITypes from 'openai';
 
 export enum ChatGPTRequestType {
   Chat = 'Chat',
   Completion = 'Completion',
-  FineTune = 'FineTune',
+  // FineTune = 'FineTune',
 }
 
 export type RequestDocument = HydratedDocument<Request>;
+
+export type ChatGPTResponseToSave = {
+  text?: string;
+  model: string;
+  usage?: object;
+}
 
 @Schema()
 export class Request {
@@ -23,14 +25,7 @@ export class Request {
   chatRequest?: any;
 
   @Prop({ required: false, type: Object })
-  response?: {
-    config: object;
-    data: CreateCompletionResponse | CreateChatCompletionResponse | FineTune;
-    headers: { 'set-cookie'?: string[] };
-    request?: object;
-    status: number;
-    statusText: string;
-  };
+  response?: ChatGPTResponseToSave;
 
   @Prop({ required: true, type: Date })
   date: Date;

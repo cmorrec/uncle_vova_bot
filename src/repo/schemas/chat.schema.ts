@@ -19,7 +19,7 @@ export class Chat {
   chatMemberIds: string[];
 
   @Prop({ required: false })
-  botDescriprion?: string;
+  botDescription?: string;
 
   @Prop({ required: false })
   botQuotes?: string[];

@@ -1,35 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import OpenAITypes, { OpenAI, ClientOptions } from 'openai';
 import { encode } from 'gpt-3-encoder';
 
 import { EnvironmentVariables } from 'src/env-validator';
 import { handleError } from 'src/utils/handle-error';
+import { ChatGPTResponseToSave } from 'src/repo';
+
+export type ChatCompletionRequestMessage = Pick<
+  OpenAITypes.Chat.Completions.ChatCompletionMessage,
+  'role' | 'content'
+>;
+
+const SMALL_MODEL = 'text-davinci-003';
+const MEDIUM_MODEL = 'gpt-3.5-turbo';
+const BIG_MODEL = 'gpt-4o';
+
+const MODEL = BIG_MODEL;
 
 const TEMPERATURE = 0.7;
 const MAX_TOKENS = 1800;
 
 @Injectable()
 export class ChatGPTProvider {
-  private openai: OpenAIApi;
+  private openai: OpenAI;
 
   constructor(private readonly config: ConfigService<EnvironmentVariables>) {
-    const configuration = new Configuration({
+    const configuration: ClientOptions = {
       apiKey: this.config.get('OPENAI_API_KEY'),
-    });
-    this.openai = new OpenAIApi(configuration);
+    };
+    this.openai = new OpenAI(configuration);
   }
 
-  async getCompletion(requestText: string) {
+  async getCompletion(
+    requestText: string,
+  ): Promise<ChatGPTResponseToSave | undefined> {
     try {
-      const response = await this.openai.createCompletion({
-        model: 'text-davinci-003',
+      const response = await this.openai.completions.create({
+        model: SMALL_MODEL,
         prompt: requestText,
         temperature: TEMPERATURE,
         max_tokens: this.getMaxTokens({ prompt: requestText }),
       });
 
-      return response.data;
+      return {
+        text: response.choices[0].text,
+        model: response.model,
+        usage: response.usage,
+      };
     } catch (error) {
       handleError(error);
     }
@@ -37,17 +55,25 @@ export class ChatGPTProvider {
     return undefined;
   }
 
-  async getChat(requestChat: ChatCompletionRequestMessage[]) {
+  async getChat(
+    requestChat: ChatCompletionRequestMessage[],
+  ): Promise<ChatGPTResponseToSave | undefined> {
     try {
-      const response = await this.openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        // TODO what the fuck
-        messages: requestChat.map((e) => ({ role: e.role, content: e.content })),
+      const response = await this.openai.chat.completions.create({
+        model: MODEL,
+        messages: requestChat.map((e) => ({
+          role: e.role,
+          content: e.content,
+        })),
         temperature: TEMPERATURE,
         max_tokens: this.getMaxTokens({ messages: requestChat }),
       });
 
-      return response.data;
+      return {
+        text: response.choices[0].message.content ?? undefined,
+        model: response.model,
+        usage: response.usage,
+      };
     } catch (error) {
       handleError(error);
     }
@@ -81,7 +107,7 @@ export class ChatGPTProvider {
       return max - encodedCompletion.length;
     } else if ('messages' in input) {
       const encodedChatTokenNumber = input.messages
-        .map((e) => encode(e.content).length)
+        .map((e) => encode(e.content ?? '').length)
         .reduce((acc, cur) => acc + cur);
 
       return max - encodedChatTokenNumber;
