@@ -1,4 +1,3 @@
-- Добавить webhook
 - переписать на express
 - Добавить туда webhook
 - создать mongodb базу
