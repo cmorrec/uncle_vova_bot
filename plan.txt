@@ -1,0 +1,8 @@
+- Добавить webhook
+- переписать на express
+- Добавить туда webhook
+- создать mongodb базу
+- настроить lambda и api-gateway
+  - доступ к openai
+  - доступ к mongodb
+  - крон который дергает ручку 

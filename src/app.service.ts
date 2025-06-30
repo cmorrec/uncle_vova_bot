@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Cron } from '@nestjs/schedule';
 import { chain, Dictionary, isEmpty, keyBy, takeRight } from 'lodash';
 import { DateTime } from 'luxon';
 import { I18nService } from 'nestjs-i18n';
@@ -63,7 +62,8 @@ export class AppService {
     ];
   }
 
-  @Cron('0 0 17 * * *')
+  // @Cron('0 0 17 * * *')
+  // since we use lambda + api gateway
   async wakeUpChat() {
     const initDate = DateTime.local().minus({ days: 3 }).toJSDate();
     const chats = await this.chatRepo.getWakedUp();
@@ -98,13 +98,20 @@ export class AppService {
   }
 
   async getStartMessage(): Promise<string> {
-    // TODO
-    return '/start';
+    return this.i18n.t('events.start', {
+      args: {
+        formalMentions: this.getFormalMentions()
+          .map((e) => `'${e}'`)
+          .join(', '),
+        informalMentions: this.getInformalMentions()
+          .map((e) => `'${e}'`)
+          .join(', '),
+      },
+    });
   }
 
   async getHelpMessage(): Promise<string> {
-    // TODO
-    return '/help';
+    return this.i18n.t('events.help', {});
   }
 
   async getAnswer(updateDBInfo: UpdateDBInfo): Promise<ResultType | undefined> {
@@ -302,7 +309,9 @@ export class AppService {
   }
 
   // TODO move it to main middleware if for all users used
-  async saveChatMiddleware(ctx: BotContext): Promise<Chat | undefined> {
+  async saveChatMiddleware(
+    ctx: Pick<BotContext, 'update'>,
+  ): Promise<Chat | undefined> {
     const now = DateTime.local().toJSDate();
     const ctxMessage = ctx.update.message;
     const ctxChat = ctxMessage.chat;

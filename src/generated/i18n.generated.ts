@@ -21,6 +21,10 @@ export type I18nTranslations = {
             "userQuotesTransition": string;
             "informalRef": string;
         };
+        "start": string;
+        "startFormal": string;
+        "help": string;
+        "helpFormal": string;
     };
 };
 export type I18nPath = Path<I18nTranslations>;

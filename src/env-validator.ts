@@ -1,5 +1,5 @@
-import { plainToClass } from 'class-transformer';
-import { IsOptional, IsString, validateSync } from 'class-validator';
+import { plainToClass, Transform } from 'class-transformer';
+import { IsInt, IsOptional, IsString, validateSync } from 'class-validator';
 
 export class EnvironmentVariables {
   @IsString()
@@ -28,6 +28,14 @@ export class EnvironmentVariables {
   @IsString()
   @IsOptional()
   WEBHOOK_PATH?: string;
+  
+  @IsString()
+  @IsOptional()
+  WEBHOOK_SECRET_TOKEN?: string;
+  
+  @IsInt()
+  @Transform((e) => Number(e.value))
+  PORT: number;
 }
 
 export function validateEnv(config: Record<string, unknown>) {

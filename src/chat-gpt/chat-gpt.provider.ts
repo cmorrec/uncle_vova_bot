@@ -12,7 +12,6 @@ export type ChatCompletionRequestMessage = Pick<
   'role' | 'content'
 >;
 
-const SMALL_MODEL = 'text-davinci-003';
 const MEDIUM_MODEL = 'gpt-3.5-turbo';
 const BIG_MODEL = 'gpt-4o';
 
@@ -37,7 +36,7 @@ export class ChatGPTProvider {
   ): Promise<ChatGPTResponseToSave | undefined> {
     try {
       const response = await this.openai.completions.create({
-        model: SMALL_MODEL,
+        model: MODEL,
         prompt: requestText,
         temperature: TEMPERATURE,
         max_tokens: this.getMaxTokens({ prompt: requestText }),

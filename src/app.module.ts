@@ -20,20 +20,27 @@ import { RepoModule } from './repo/repo.module';
       imports: [ConfigModule],
       useFactory: async (
         configService: ConfigService<EnvironmentVariables>,
-      ) => ({
-        token: configService.get<string>('TELEGRAM_BOT_TOKEN') ?? '',
-        ...(configService.get<string>('WEBHOOK_DOMAIN') &&
-        configService.get<string>('WEBHOOK_PATH')
+      ) => {
+        const botToken = configService.getOrThrow<string>('TELEGRAM_BOT_TOKEN');
+        const webhookDomain = configService.get<string>('WEBHOOK_DOMAIN');
+        const webhookPath = configService.get<string>('WEBHOOK_PATH');
+
+        return {
+        token: botToken,
+        ...(webhookDomain && webhookPath
           ? {
               launchOptions: {
+                allowedUpdates: ['message'],
                 webhook: {
-                  domain: configService.get<string>('WEBHOOK_DOMAIN') ?? '',
-                  hookPath: configService.get<string>('WEBHOOK_PATH') ?? '',
+                  secretToken: configService.getOrThrow<string>('WEBHOOK_SECRET_TOKEN'),
+                  hookPath: webhookPath,
+                  domain: webhookDomain,
                 },
               },
             }
           : {}),
-      }),
+      }
+      },
       inject: [ConfigService],
     }),
     I18nModule.forRoot({
