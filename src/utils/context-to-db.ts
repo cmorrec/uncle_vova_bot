@@ -34,7 +34,7 @@ export const contextMessageToDb = ({
   entities: message.entities,
   captionEntities: message.caption_entities,
   sticker: message.sticker,
-  type: getMessageType(message),
+  messageType: getMessageType(message),
   isMainBotMessage: isMainBot,
   isFormalMessage: isFormal,
 });

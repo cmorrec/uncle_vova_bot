@@ -51,7 +51,7 @@ export class MessageRepo {
       .find({
         chatId,
         ...(date ? { date: { $gte: date } } : {}),
-        type: { $in: types },
+        messageType: { $in: types },
         ...(userId ? { userId } : {}),
       })
       .sort({ date: -1 })

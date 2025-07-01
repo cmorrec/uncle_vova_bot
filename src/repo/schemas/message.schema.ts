@@ -90,7 +90,7 @@ export class Message {
   sticker?: Sticker;
 
   @Prop({ required: true })
-  type: MessageType;
+  messageType: MessageType;
 
   @Prop({ required: true })
   isMainBotMessage: boolean;

@@ -34,7 +34,7 @@ export class Chat {
   updatedAt: Date;
 
   @Prop({ required: true })
-  type: ChatType;
+  chatType: ChatType;
 
   @Prop({ required: true })
   wakeUp: boolean;

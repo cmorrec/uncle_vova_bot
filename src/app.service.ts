@@ -117,7 +117,7 @@ export class AppService {
   async getAnswer(updateDBInfo: UpdateDBInfo): Promise<ResultType | undefined> {
     const { message } = updateDBInfo;
     const text = message?.text ?? message?.caption;
-    if (!message || !text || !availableTextTypes.includes(message.type)) {
+    if (!message || !text || !availableTextTypes.includes(message.messageType)) {
       return undefined;
     }
 
@@ -336,7 +336,7 @@ export class AppService {
           title: ctxChat.title,
           createdAt: now,
           updatedAt: now,
-          type: ctxChat.type,
+          chatType: ctxChat.type,
           wakeUp: true,
           botIsRude: true,
           active: false,
